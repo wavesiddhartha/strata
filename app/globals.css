@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "tippy.js/dist/tippy.css";
+
+/* SlashMenu renders inside a tippy popup with its own rounded/shadowed box —
+   strip tippy's default background/border so it isn't double-boxed. */
+.tippy-box[data-theme~="strata"] {
+  background: transparent;
+  box-shadow: none;
+}
+.tippy-box[data-theme~="strata"] > .tippy-content {
+  padding: 0;
+}
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: #f0eee6;
+  color: #1a1a1a;
+}
+
+:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 2px;
+}
+
+/* Inputs that already have their own focus treatment (soft shadow-lift on
+   their pill container) turn off the default rectangular outline so the
+   two treatments don't fight each other. */
+.search-input:focus-visible,
+.strata-prose:focus-visible {
+  outline: none;
+}
+
+/* --- The document editor (TipTap) ------------------------------------ */
+/* Serif body text for the page itself, since this is content, not UI —
+   mirrors the design system's rule that serif = what you read, sans = the
+   chrome around it. */
+.strata-prose {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #1a1a1a;
+  min-height: 50vh;
+}
+
+.strata-prose p {
+  margin: 0.9em 0;
+}
+
+.strata-prose h1,
+.strata-prose h2,
+.strata-prose h3 {
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 1.4em 0 0.5em;
+}
+.strata-prose h1 { font-size: 1.9em; }
+.strata-prose h2 { font-size: 1.5em; }
+.strata-prose h3 { font-size: 1.2em; }
+
+.strata-prose ul,
+.strata-prose ol {
+  margin: 0.9em 0;
+  padding-left: 1.4em;
+}
+.strata-prose li {
+  margin: 0.35em 0;
+}
+
+.strata-prose blockquote {
+  border-left: 2px solid #d8d3c4;
+  margin: 1em 0;
+  padding-left: 1em;
+  color: rgba(26, 26, 26, 0.65);
+  font-style: italic;
+}
+
+.strata-prose code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: #f0eee6;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+.strata-prose pre {
+  background: #1a1a1a;
+  color: #f0eee6;
+  border-radius: 8px;
+  padding: 1em;
+  overflow-x: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+}
+.strata-prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.strata-prose hr {
+  border: none;
+  border-top: 1px solid #d8d3c4;
+  margin: 2em 0;
+}
+
+/* Placeholder text on the first empty paragraph */
+.strata-prose p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: rgba(26, 26, 26, 0.3);
+  font-style: italic;
+  pointer-events: none;
+  height: 0;
+}
+
+/* --- Print / PDF export ------------------------------------------------ */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+  .strata-prose h1,
+  .strata-prose h2,
+  .strata-prose h3 {
+    break-after: avoid;
+  }
+  .strata-prose blockquote,
+  .strata-prose pre,
+  .strata-prose li {
+    break-inside: avoid;
+  }
+  .strata-prose p {
+    orphans: 3;
+    widows: 3;
+  }
+}
